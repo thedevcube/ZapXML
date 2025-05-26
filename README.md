@@ -9,3 +9,6 @@ This is the source code for it.
 [This software is intended to be used with Vectorier, a vector level editor.](https://github.com/FlipThoseTitle/Vectorier-Unity-Editor)
 
 # Shoutout to floofly. (MrSampleJay) for helping me on understanding vectorier trigger codes.
+
+
+This project is licensed under the MIT License — see the LICENSE file for details.
