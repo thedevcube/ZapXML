@@ -1,0 +1,213 @@
+[gd_scene load_steps=12 format=3 uid="uid://mmx6wnwjabl7"]
+
+[ext_resource type="Script" uid="uid://rw76vtxxh0a2" path="res://main.gd" id="1_lquwl"]
+[ext_resource type="Script" uid="uid://lon2jlmihdqd" path="res://scripts/Main scripts/main_scene/convert_button.gd" id="2_5vw27"]
+[ext_resource type="Script" uid="uid://bkoxhk75iuacw" path="res://scripts/Main scripts/main_scene/add_to_itemlist_script.gd" id="2_h2yge"]
+[ext_resource type="Script" uid="uid://hv34ur41iu0i" path="res://scripts/Main scripts/main_scene/main_tabs_script.gd" id="3_kek77"]
+[ext_resource type="AudioStream" uid="uid://ccuu7privl8y8" path="res://sounds/m_jump1.wav" id="6_7mycd"]
+[ext_resource type="Texture2D" uid="uid://dhfphv8b4wbe3" path="res://images/track_preloader_bg.png" id="7_272bh"]
+[ext_resource type="Script" uid="uid://d1bnr3ljhu60p" path="res://fadein.gd" id="8_5vw27"]
+[ext_resource type="Script" uid="uid://dgvy77c2ar3pn" path="res://scripts/Main scripts/loops_tab.gd" id="10_efxa6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_272bh"]
+bg_color = Color(0.168627, 0.168627, 0.168627, 0.290196)
+
+[sub_resource type="InputEventKey" id="InputEventKey_1bvp3"]
+device = -1
+pressed = true
+keycode = 65
+unicode = 97
+
+[sub_resource type="Shortcut" id="Shortcut_lquwl"]
+events = [SubResource("InputEventKey_1bvp3")]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_lquwl")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -10
+position = Vector2(537, 482)
+scale = Vector2(0.633984, 0.633984)
+texture = ExtResource("7_272bh")
+
+[node name="version" type="RichTextLabel" parent="."]
+layout_mode = 2
+offset_right = 22.0
+offset_bottom = 23.0
+text = "V1"
+fit_content = true
+scroll_active = false
+
+[node name="credit" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 10.0
+offset_right = 123.0
+offset_bottom = 33.0
+scale = Vector2(0.650222, 0.650222)
+text = "Thelastcube"
+fit_content = true
+scroll_active = false
+
+[node name="ConvertButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.015
+anchor_top = 0.981
+anchor_right = 0.015
+anchor_bottom = 0.981
+offset_left = -0.280001
+offset_top = -37.688
+offset_right = 156.72
+offset_bottom = 0.311951
+grow_vertical = 0
+mouse_default_cursor_shape = 2
+text = "Convert"
+script = ExtResource("2_5vw27")
+
+[node name="ItemList_tabs" type="TabBar" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.712
+anchor_top = 0.057
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -0.223999
+offset_top = -30.936
+offset_right = -166.0
+offset_bottom = -611.0
+mouse_default_cursor_shape = 2
+current_tab = 0
+scrolling_enabled = false
+tab_count = 3
+tab_0/title = "Init"
+tab_1/title = "Loops"
+tab_2/title = "XML"
+script = ExtResource("3_kek77")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 2
+offset_left = 820.0
+offset_top = 38.0
+offset_right = 1152.0
+offset_bottom = 648.0
+mouse_filter = 1
+
+[node name="Initlist_scroll" type="ScrollContainer" parent="Panel"]
+top_level = true
+layout_mode = 2
+offset_left = 820.0
+offset_top = 38.0
+offset_right = 1152.0
+offset_bottom = 648.0
+horizontal_scroll_mode = 0
+
+[node name="Init_List" type="VBoxContainer" parent="Panel/Initlist_scroll" groups=["ItemList"]]
+custom_minimum_size = Vector2(62.67, 27)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+tooltip_text = "Your init variables go here."
+mouse_default_cursor_shape = 2
+
+[node name="ItemXML_compiledtext" type="TextEdit" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 698.0
+offset_top = 40.0
+offset_right = 1149.0
+offset_bottom = 640.0
+theme_override_colors/background_color = Color(0, 0, 0, 0.843137)
+theme_override_styles/normal = SubResource("StyleBoxFlat_272bh")
+text = "No code yet."
+emoji_menu_enabled = false
+drag_and_drop_selection_enabled = false
+wrap_mode = 1
+scroll_smooth = true
+
+[node name="Add" type="OptionButton" parent="."]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 25.0
+offset_right = 147.0
+offset_bottom = 60.0
+scale = Vector2(1.12322, 1.01469)
+tooltip_text = "Add an variable, variables are used as  conditions for the trigger to work
+or are used in actions."
+mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_lquwl")
+alignment = 1
+autowrap_mode = 3
+selected = 0
+item_count = 4
+popup/item_0/text = "Add"
+popup/item_0/id = 0
+popup/item_0/disabled = true
+popup/item_0/separator = true
+popup/item_1/text = "Custom"
+popup/item_1/id = 1
+popup/item_2/text = "AI number"
+popup/item_2/id = 2
+popup/item_3/text = "Node type"
+popup/item_3/id = 3
+script = ExtResource("2_h2yge")
+
+[node name="Loops_tab" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 820.0
+offset_top = 40.0
+offset_right = 1152.0
+offset_bottom = 648.0
+script = ExtResource("10_efxa6")
+
+[node name="MarginContainer" type="MarginContainer" parent="Loops_tab"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Loops_tab/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Add_loop" type="Button" parent="."]
+visible = false
+layout_mode = 2
+offset_left = 1059.0
+offset_top = 4.0
+offset_right = 1145.0
+offset_bottom = 35.0
+text = "Add"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_7mycd")
+
+[node name="Musicplayer" type="AudioStreamPlayer" parent="."]
+
+[node name="fadein" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(0, 0, 0, 1)
+position = Vector2(544, 257)
+texture = ExtResource("7_272bh")
+script = ExtResource("8_5vw27")
+
+[node name="music_togggle" type="CheckButton" parent="."]
+layout_mode = 0
+offset_left = 184.0
+offset_top = 603.0
+offset_right = 278.0
+offset_bottom = 634.0
+button_pressed = true
+text = "Music"
+
+[connection signal="button_down" from="ConvertButton" to="ConvertButton" method="_on_button_down"]
+[connection signal="tab_changed" from="ItemList_tabs" to="ItemList_tabs" method="_on_tab_changed"]
+[connection signal="button_down" from="Add" to="Add" method="_on_button_down"]
+[connection signal="item_selected" from="Add" to="Add" method="_on_item_selected"]
+[connection signal="button_down" from="Add_loop" to="Loops_tab" method="_on_add_loop_button_down"]
+[connection signal="finished" from="Musicplayer" to="." method="_on_musicplayer_finished"]
+[connection signal="button_down" from="music_togggle" to="." method="_on_music_togggle_button_down"]

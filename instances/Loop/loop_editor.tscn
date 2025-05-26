@@ -1,0 +1,360 @@
+[gd_scene load_steps=11 format=3 uid="uid://pqtbhkj1gwdf"]
+
+[ext_resource type="Script" uid="uid://cwjbsiyi2yhgq" path="res://scripts/Loops/loop_editor/loop_editor_main.gd" id="1_s7x5h"]
+[ext_resource type="Script" uid="uid://cgtbjbbf11pmj" path="res://scripts/Loops/loop_editor/action/action_tree.gd" id="2_626kg"]
+[ext_resource type="Texture2D" uid="uid://dhfphv8b4wbe3" path="res://images/track_preloader_bg.png" id="2_jgd4j"]
+[ext_resource type="Script" uid="uid://uorlahf5k6vf" path="res://instances/Loop/panels.gd" id="2_udqq3"]
+[ext_resource type="Script" uid="uid://bwr6txjhm6fg6" path="res://scripts/Loops/loop_editor/action/condition_tree.gd" id="3_5w7bp"]
+[ext_resource type="Script" uid="uid://d1bnr3ljhu60p" path="res://fadein.gd" id="6_vm77g"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_626kg"]
+bg_color = Color(0.203922, 0.203922, 0.313726, 0.356863)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y78vq"]
+bg_color = Color(0.211765, 0.211765, 0.211765, 0.752941)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_udqq3"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5w7bp"]
+content_margin_left = 3.0
+bg_color = Color(0.147672, 0.147672, 0.147672, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="Loopeditor" type="Window"]
+disable_3d = true
+title = "Loop editor"
+initial_position = 1
+size = Vector2i(430, 550)
+always_on_top = true
+content_scale_aspect = 4
+script = ExtResource("1_s7x5h")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sprite2D" type="TextureRect" parent="Control"]
+z_index = -500
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -910.0
+offset_top = -492.0
+offset_right = 708.0
+offset_bottom = 494.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.376865, 0.376865)
+pivot_offset = Vector2(1118.25, 747.906)
+texture = ExtResource("2_jgd4j")
+stretch_mode = 3
+
+[node name="Tabs" type="TabBar" parent="Control"]
+layout_mode = 0
+offset_left = 65.0
+offset_top = 42.0
+offset_right = 247.0
+offset_bottom = 73.0
+scale = Vector2(0.784451, 0.784451)
+current_tab = 0
+tab_count = 2
+tab_0/title = "Actions"
+tab_1/title = "Conditions"
+
+[node name="panels" type="Node" parent="Control"]
+script = ExtResource("2_udqq3")
+
+[node name="ActionPanel" type="ScrollContainer" parent="Control/panels"]
+clip_contents = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 65.6225
+offset_top = 67.0
+offset_right = -65.6225
+offset_bottom = -33.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_626kg")
+draw_focus_border = true
+horizontal_scroll_mode = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="Margin" type="MarginContainer" parent="Control/panels/ActionPanel"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/margin_top = 25
+
+[node name="ScrollList" type="FlowContainer" parent="Control/panels/ActionPanel/Margin"]
+layout_mode = 2
+last_wrap_alignment = 2
+script = ExtResource("2_626kg")
+
+[node name="info" type="RichTextLabel" parent="Control/panels/ActionPanel"]
+custom_minimum_size = Vector2(63, 0)
+layout_mode = 2
+size_flags_horizontal = 6
+text = "Actions"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Event" type="RichTextLabel" parent="Control/panels/ActionPanel"]
+custom_minimum_size = Vector2(120.02, 0)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.190109, 0.19502, 0.159756, 1)
+theme_override_constants/outline_size = 5
+text = "Enter"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ConditionsPanel" type="ScrollContainer" parent="Control/panels"]
+visible = false
+clip_contents = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 65.6225
+offset_top = 66.0
+offset_right = -65.6225
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_626kg")
+draw_focus_border = true
+horizontal_scroll_mode = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="Margin" type="MarginContainer" parent="Control/panels/ConditionsPanel"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/margin_top = 25
+
+[node name="ScrollList" type="FlowContainer" parent="Control/panels/ConditionsPanel/Margin"]
+layout_mode = 2
+last_wrap_alignment = 2
+script = ExtResource("3_5w7bp")
+
+[node name="info" type="RichTextLabel" parent="Control/panels/ConditionsPanel"]
+custom_minimum_size = Vector2(84.32, 0)
+layout_mode = 2
+size_flags_horizontal = 6
+text = "Conditions"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Save_container" type="BoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.023
+anchor_top = 0.989
+anchor_right = 0.023
+anchor_bottom = 0.989
+offset_left = -0.130001
+offset_top = -39.95
+offset_right = 62.87
+offset_bottom = 0.0499878
+grow_vertical = 0
+alignment = 1
+
+[node name="SaveButton" type="Button" parent="Control/Save_container"]
+z_index = 1
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_y78vq")
+text = "  Save  "
+
+[node name="Add_container" type="BoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.00697674
+anchor_top = 0.00545456
+anchor_right = 0.611628
+anchor_bottom = 0.0618182
+offset_right = -69.0
+theme_override_constants/separation = 160
+metadata/_edit_use_anchors_ = true
+
+[node name="AddNode" type="OptionButton" parent="Control/Add_container"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.138034, 0.138034, 0.138034, 1)
+flat = true
+alignment = 1
+selected = 0
+item_count = 15
+popup/item_0/text = "Add"
+popup/item_0/id = 0
+popup/item_0/disabled = true
+popup/item_0/separator = true
+popup/item_1/text = "Activate"
+popup/item_1/id = 0
+popup/item_2/text = "Camera follow"
+popup/item_2/id = 1
+popup/item_3/text = "Camera smoothness"
+popup/item_3/id = 11
+popup/item_4/text = "Camera zoom"
+popup/item_4/id = 2
+popup/item_5/text = "End game"
+popup/item_5/id = 12
+popup/item_6/text = "Force animation"
+popup/item_6/id = 14
+popup/item_7/text = "Kill model"
+popup/item_7/id = 3
+popup/item_8/text = "Play sound"
+popup/item_8/id = 13
+popup/item_9/text = "Set control"
+popup/item_9/id = 4
+popup/item_10/text = "Simulate key"
+popup/item_10/id = 5
+popup/item_11/text = "Stop camera"
+popup/item_11/id = 6
+popup/item_12/text = "Trigger once"
+popup/item_12/id = 7
+popup/item_13/text = "Wait"
+popup/item_13/id = 8
+popup/item_14/text = "Custom"
+popup/item_14/id = 9
+
+[node name="Add_condition_container" type="BoxContainer" parent="Control"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.00465116
+anchor_top = 0.00318182
+anchor_right = 0.448674
+anchor_bottom = 0.06
+offset_top = 0.250008
+offset_right = 0.0700226
+theme_override_constants/separation = 160
+metadata/_edit_use_anchors_ = true
+
+[node name="AddCondition" type="OptionButton" parent="Control/Add_condition_container"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.209908, 0.209908, 0.209908, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_udqq3")
+alignment = 1
+selected = 0
+fit_to_longest_item = false
+item_count = 3
+popup/item_0/text = "Add condition"
+popup/item_0/id = 0
+popup/item_0/separator = true
+popup/item_1/text = "AI"
+popup/item_1/id = 1
+popup/item_2/text = "Custom"
+popup/item_2/id = 2
+
+[node name="Events_container" type="BoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -83.0
+offset_bottom = 31.0
+grow_horizontal = 0
+theme_override_constants/separation = 160
+alignment = 2
+
+[node name="EventsNode" type="OptionButton" parent="Control/Events_container"]
+layout_mode = 2
+tooltip_text = "Events:
+Enter = When entering this trigger
+Exit = When leaving this trigger
+Activate = Only activate when called by an \"Activate ActionID\"
+KeyPressed = Detects key press
+OnShow = When this trigger enters the screen
+OnHide = When this trigger leaves the screen
+OnStartGame = When the level starts"
+theme_override_colors/font_color = Color(0.356565, 0.356565, 0.356565, 1)
+flat = true
+alignment = 1
+selected = 0
+fit_to_longest_item = false
+item_count = 10
+popup/item_0/text = "Events"
+popup/item_0/id = 0
+popup/item_0/disabled = true
+popup/item_0/separator = true
+popup/item_1/text = "Enter"
+popup/item_1/id = 1
+popup/item_2/text = "Exit"
+popup/item_2/id = 2
+popup/item_3/text = "Activate"
+popup/item_3/id = 3
+popup/item_4/text = "KeyPressed"
+popup/item_4/id = 4
+popup/item_5/text = "ValueChange"
+popup/item_5/id = 5
+popup/item_6/text = "OnShow"
+popup/item_6/id = 6
+popup/item_7/text = "OnHide"
+popup/item_7/id = 7
+popup/item_8/text = "Help (information)"
+popup/item_8/id = 8
+popup/item_9/text = "Custom"
+popup/item_9/id = 9
+
+[node name="choiceorder" type="OptionButton" parent="Control"]
+z_index = 1
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -143.0
+offset_top = -37.0
+offset_right = -4.0
+offset_bottom = -6.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_5w7bp")
+selected = 0
+item_count = 4
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Random"
+popup/item_1/id = 1
+popup/item_2/text = "Straight"
+popup/item_2/id = 2
+popup/item_3/text = "Sync"
+popup/item_3/id = 3
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="fadein" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(0, 0, 0, 1)
+z_index = 430
+position = Vector2(544, 257)
+texture = ExtResource("2_jgd4j")
+script = ExtResource("6_vm77g")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="tab_changed" from="Control/Tabs" to="." method="_ON_TAB_CHANGED"]
+[connection signal="button_down" from="Control/Save_container/SaveButton" to="." method="_on_save_button_button_down"]
+[connection signal="item_selected" from="Control/Add_container/AddNode" to="." method="_on_add_node_item_selected"]
+[connection signal="item_selected" from="Control/Add_condition_container/AddCondition" to="." method="_on_add_condition_item_selected"]
+[connection signal="item_selected" from="Control/Events_container/EventsNode" to="." method="_on_events_node_item_selected"]
+[connection signal="item_selected" from="Control/choiceorder" to="." method="_on_choiceorder_item_selected"]

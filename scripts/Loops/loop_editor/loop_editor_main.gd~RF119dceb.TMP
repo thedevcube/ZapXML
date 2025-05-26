@@ -1,0 +1,118 @@
+extends Window
+
+## The button list node that has all the events
+@onready var events_list = $Control/Events_container/EventsNode
+## The button list node that has all the actions
+@onready var addnode = $Control/Add_container/AddNode
+## The text node that shows the current event type
+@onready var info_eventnode = $Control/ActionPanel/Event
+## The list of actions, basically our "father" in this hiearaquy... or whatever that was
+@onready var action_list = get_node("Control/ActionPanel/Margin/ScrollList")
+## Root, before the action list, i hate having to add an var for this but get_parent() doesnt work :(
+@onready var action_list_root = get_node("Control/ActionPanel/Margin")
+## The button list node that has all the choice orders
+@onready var choiceorder = $Control/choiceorder
+
+var current_loop_name = ""
+
+
+func _notification(what: int) -> void:
+	# If the user wants to close the app, close it.
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		queue_free()
+
+
+func _on_mouse_entered() -> void:
+	# When the mouse enters this node's field, grab focus
+	grab_focus()
+
+func _on_add_node_item_selected(index) -> void:
+	# Make a new variant var, load the action file that has the name of the
+	# currently selected action
+	var newnode
+	newnode = load("res://instances/Loop/loop_editor_nodes/" + addnode.get_item_text(index) + ".scn").instantiate()
+	action_list.add_child(newnode)
+	addnode.select(0)
+func receive_loopname(loopname: String):
+	# When receiving loop name, set the window title based on it.
+	title = "Loop editor (" + loopname + ")"
+	current_loop_name = loopname
+	load_loop()
+
+
+
+func _on_events_node_item_selected(index: int) -> void:
+	if index == 8: # Information
+		always_on_top = false
+		OS.alert('Events: (Those are basically a condition)\nEnter = When entering this trigger\nExit = When leaving this trigger\nActivate = Only activate when called by an "Activate ActionID"\nKeyPressed = Detects any key press, you can specify a key by adding an Key variable inside the init.\n (Only triggers while inside the trigger area.)\nOnShow = When this trigger enters the screen\nOnHide = When this trigger leaves the screen\nOnStartGame = When the level starts' , "Events information")
+		always_on_top = true
+		events_list.select(0)
+	if index == 4: # Keypressed, shows an dialog and minimizes this window
+		always_on_top = false
+		Global.instance_dialog("key" , self)
+		mode = MODE_MINIMIZED
+
+	if index == 9: # custom, shows an dialog and minimizes this window
+		always_on_top = false
+		Global.instance_dialog("string" , self)
+		mode = MODE_MINIMIZED
+
+	if index != 4 and index != 8 and index != 9: # If the selected one isn't a special event, add it
+		action_list.using = "none"
+		info_eventnode.text = events_list.get_item_text(index)
+		action_list.receive_event(events_list.get_item_text(index))
+
+func _on_save_button_button_down() -> void:
+	save_loop()
+
+
+func save_loop():
+	# Check if zapxml's temporary folder exists, if it doesn't, make a new one
+	if not DirAccess.dir_exists_absolute(Global.zap_folder_loop):
+		push_error("The folder doesn't exist, creating one.")
+		DirAccess.make_dir_recursive_absolute(Global.zap_folder_loop)
+	else: # if it does, make all nodes present inside this loop have an owner so they get saved too.
+		for i in action_list.get_child_count():
+			var child = action_list.get_child(i)
+			child.owner = action_list
+			for child_child_i in child.get_child_count():
+				var child_child = child.get_child(child_child_i)
+				child_child.owner = child
+		# make a new packedscene where we'll store this whole thing, then pack it and save on the temporary folder.
+		var packedscene = PackedScene.new()
+		packedscene.pack(action_list)
+		ResourceSaver.save(packedscene , Global.zap_folder_loop + current_loop_name + ".scn")
+
+func load_loop():
+	# Checks if an scn file with the current loop name exists in the temporary folder
+	if FileAccess.file_exists(Global.zap_folder_loop + current_loop_name + ".scn"):
+		action_list.queue_free() # delete the current loop, then reference the file that has the saved loop
+		var new_actiontree = load(Global.zap_folder_loop + current_loop_name + ".scn").instantiate()
+		action_list = new_actiontree # save it in a variable, no idea why but it works this way
+		action_list_root.add_child(new_actiontree) # then add the action tree
+		info_eventnode.text = action_list.event_text # and load the texts with the actual values saved by the loop
+		choiceorder.select(action_list.choiceorder)
+
+func _on_mouse_exited() -> void:
+	# efficient, saves when the mouse leaves this window
+	save_loop()
+
+
+func _on_choiceorder_item_selected(index: int) -> void:
+	action_list.choiceorder = index
+
+# receive value, for now just for keypress event
+func receive_value(_empty , value):
+	if events_list.get_selected_id() == 4: # For keypress
+		mode = MODE_WINDOWED
+		action_list.event_text = str("OnKey: " + value)
+		info_eventnode.text = action_list.event_text
+		action_list.local_event = "<KeyPressed />"
+		action_list.using = '<Variable Name="Key" DefaultValue="' + value + '" Type="Key" />'
+
+	if events_list.get_selected_id() == 9: # For custom
+		mode = MODE_WINDOWED
+		action_list.event_text = str(value)
+		info_eventnode.text = action_list.event_text
+		action_list.local_event = value
+		action_list.using = 'none'
