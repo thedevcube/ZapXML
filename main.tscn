@@ -1,12 +1,12 @@
-[gd_scene load_steps=12 format=3 uid="uid://mmx6wnwjabl7"]
+[gd_scene load_steps=13 format=3 uid="uid://mmx6wnwjabl7"]
 
-[ext_resource type="Script" uid="uid://rw76vtxxh0a2" path="res://main.gd" id="1_lquwl"]
-[ext_resource type="Script" uid="uid://lon2jlmihdqd" path="res://scripts/Main scripts/main_scene/convert_button.gd" id="2_5vw27"]
-[ext_resource type="Script" uid="uid://bkoxhk75iuacw" path="res://scripts/Main scripts/main_scene/add_to_itemlist_script.gd" id="2_h2yge"]
-[ext_resource type="Script" uid="uid://hv34ur41iu0i" path="res://scripts/Main scripts/main_scene/main_tabs_script.gd" id="3_kek77"]
+[ext_resource type="Script" uid="uid://8j7khmslm00r" path="res://main.gd" id="1_lquwl"]
+[ext_resource type="Script" uid="uid://7cukalsj81vs" path="res://scripts/Main scripts/main_scene/convert_button.gd" id="2_5vw27"]
+[ext_resource type="Script" uid="uid://ddgcyyfda7i5k" path="res://scripts/Main scripts/main_scene/add_to_itemlist_script.gd" id="2_h2yge"]
+[ext_resource type="Script" uid="uid://dkwnlbx3n73me" path="res://scripts/Main scripts/main_scene/main_tabs_script.gd" id="3_kek77"]
 [ext_resource type="AudioStream" uid="uid://ccuu7privl8y8" path="res://sounds/m_jump1.wav" id="6_7mycd"]
 [ext_resource type="Texture2D" uid="uid://dhfphv8b4wbe3" path="res://images/track_preloader_bg.png" id="7_272bh"]
-[ext_resource type="Script" uid="uid://d1bnr3ljhu60p" path="res://fadein.gd" id="8_5vw27"]
+[ext_resource type="Script" uid="uid://dhuo0eagpquer" path="res://fadein.gd" id="8_5vw27"]
 [ext_resource type="Script" uid="uid://dgvy77c2ar3pn" path="res://scripts/Main scripts/loops_tab.gd" id="10_efxa6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_272bh"]
@@ -21,7 +21,13 @@ unicode = 97
 [sub_resource type="Shortcut" id="Shortcut_lquwl"]
 events = [SubResource("InputEventKey_1bvp3")]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5vw27"]
+bg_color = Color(0.356565, 0.356565, 0.356565, 1)
+skew = Vector2(-1.766, 0)
+border_width_top = 4
+
 [node name="Control" type="Control"]
+clip_contents = true
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -32,7 +38,7 @@ script = ExtResource("1_lquwl")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -10
-position = Vector2(537, 482)
+position = Vector2(508, 484)
 scale = Vector2(0.633984, 0.633984)
 texture = ExtResource("7_272bh")
 
@@ -64,8 +70,8 @@ anchor_right = 0.015
 anchor_bottom = 0.981
 offset_left = -0.280001
 offset_top = -37.688
-offset_right = 156.72
-offset_bottom = 0.311951
+offset_right = 295.72
+offset_bottom = 0.312012
 grow_vertical = 0
 mouse_default_cursor_shape = 2
 text = "Convert"
@@ -188,6 +194,45 @@ stream = ExtResource("6_7mycd")
 
 [node name="Musicplayer" type="AudioStreamPlayer" parent="."]
 
+[node name="buttonscont" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 17.0
+offset_top = -156.0
+offset_right = 315.0
+offset_bottom = -55.0
+grow_vertical = 0
+alignment = 2
+
+[node name="HSeparator2" type="HSeparator" parent="buttonscont"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_5vw27")
+
+[node name="initdef_toggle" type="CheckButton" parent="buttonscont"]
+layout_mode = 2
+button_pressed = true
+text = "Include default init variables"
+
+[node name="init_toggle" type="CheckButton" parent="buttonscont"]
+layout_mode = 2
+button_pressed = true
+text = "Include init"
+
+[node name="HSeparator" type="HSeparator" parent="buttonscont"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_5vw27")
+
+[node name="music_toggle" type="CheckButton" parent="buttonscont"]
+layout_mode = 2
+button_pressed = true
+text = "Music"
+
+[node name="HSeparator3" type="HSeparator" parent="buttonscont"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_5vw27")
+
 [node name="fadein" type="Sprite2D" parent="."]
 visible = false
 modulate = Color(0, 0, 0, 1)
@@ -195,19 +240,11 @@ position = Vector2(544, 257)
 texture = ExtResource("7_272bh")
 script = ExtResource("8_5vw27")
 
-[node name="music_togggle" type="CheckButton" parent="."]
-layout_mode = 0
-offset_left = 184.0
-offset_top = 603.0
-offset_right = 278.0
-offset_bottom = 634.0
-button_pressed = true
-text = "Music"
-
 [connection signal="button_down" from="ConvertButton" to="ConvertButton" method="_on_button_down"]
 [connection signal="tab_changed" from="ItemList_tabs" to="ItemList_tabs" method="_on_tab_changed"]
 [connection signal="button_down" from="Add" to="Add" method="_on_button_down"]
 [connection signal="item_selected" from="Add" to="Add" method="_on_item_selected"]
 [connection signal="button_down" from="Add_loop" to="Loops_tab" method="_on_add_loop_button_down"]
 [connection signal="finished" from="Musicplayer" to="." method="_on_musicplayer_finished"]
-[connection signal="button_down" from="music_togggle" to="." method="_on_music_togggle_button_down"]
+[connection signal="pressed" from="buttonscont/init_toggle" to="." method="toggle_init_defaultvars"]
+[connection signal="button_down" from="buttonscont/music_toggle" to="." method="_on_music_togggle_button_down"]

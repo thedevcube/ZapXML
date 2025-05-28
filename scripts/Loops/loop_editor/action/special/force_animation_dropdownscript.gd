@@ -16,36 +16,21 @@ func _ready():
 				add_item((parser.get_node_name()))
 				for i in parser.get_attribute_count():
 					set_item_metadata(item_count - 1 , parser.get_attribute_value(i))
-					print(get_item_metadata(item_count - 1))
 	remove_item(0)
-	await get_parent().get_parent().ready
-	get_parent().get_parent().reload_params()
-
 
 func state_load(value):
-		self.selected = value
+	self.selected = int(value)
 
-func get_value():
+func get_value(return_item = false):
 	var me = self
-	return me.get_item_text(me.get_selected_id() - 1)
+	if me is OptionButton:
+		if return_item == false: return me.get_item_text(me.get_selected())
+		else: return me.selected
+	if me is LineEdit:
+		if me.text != "":
+			return me.get_item_text(me.get_selected())
+		else: return "_$Model"
 
 func get_frame():
 	var me = self
-	return str(me.get_item_metadata(me.get_selected_id() - 1))
-
-@onready var modelname_node = $"../Modelname"
-func get_modelname():
-	if modelname_node.text == '':
-		return "_$Model"
-	else:
-		return modelname_node.text
-
-@onready var reversed_node = $"../Reversed"
-func get_reversed():
-	if reversed_node.button_pressed == true:
-		return "1"
-	else:
-		return "0"
-
-func get_reversed_as_state():
-	return reversed_node.button_pressed
+	return me.get_item_metadata(me.get_selected())

@@ -1,0 +1,17 @@
+Events: (Those are basically a condition)
+
+Enter = When entering this trigger
+
+Exit = When leaving this trigger
+
+Activate = Only activate when called by an "Activate ActionID"
+
+KeyPressed = Detects keypress, specified by the user. (Only triggers while inside the trigger area.)
+
+OnShow = When this trigger enters the screen
+
+OnHide = When this trigger leaves the screen
+
+Timeout = When an SetTimer action timer ends, it triggers this.
+
+ValueChange = When the specified value changes

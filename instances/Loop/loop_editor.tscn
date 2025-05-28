@@ -1,11 +1,12 @@
-[gd_scene load_steps=11 format=3 uid="uid://pqtbhkj1gwdf"]
+[gd_scene load_steps=12 format=3 uid="uid://pqtbhkj1gwdf"]
 
-[ext_resource type="Script" uid="uid://cwjbsiyi2yhgq" path="res://scripts/Loops/loop_editor/loop_editor_main.gd" id="1_s7x5h"]
+[ext_resource type="Script" uid="uid://x5p6qvyw2m8i" path="res://scripts/Loops/loop_editor/loop_editor_main.gd" id="1_s7x5h"]
 [ext_resource type="Script" uid="uid://cgtbjbbf11pmj" path="res://scripts/Loops/loop_editor/action/action_tree.gd" id="2_626kg"]
 [ext_resource type="Texture2D" uid="uid://dhfphv8b4wbe3" path="res://images/track_preloader_bg.png" id="2_jgd4j"]
-[ext_resource type="Script" uid="uid://uorlahf5k6vf" path="res://instances/Loop/panels.gd" id="2_udqq3"]
+[ext_resource type="Script" uid="uid://d202eyjrr6qh8" path="res://instances/Loop/panels.gd" id="2_udqq3"]
 [ext_resource type="Script" uid="uid://bwr6txjhm6fg6" path="res://scripts/Loops/loop_editor/action/condition_tree.gd" id="3_5w7bp"]
-[ext_resource type="Script" uid="uid://d1bnr3ljhu60p" path="res://fadein.gd" id="6_vm77g"]
+[ext_resource type="Script" uid="uid://dv3ek8aswmtn1" path="res://scripts/Loops/loop_editor/add_node.gd" id="6_2idus"]
+[ext_resource type="Script" uid="uid://dhuo0eagpquer" path="res://fadein.gd" id="6_vm77g"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_626kg"]
 bg_color = Color(0.203922, 0.203922, 0.313726, 0.356863)
@@ -47,6 +48,7 @@ grow_vertical = 2
 
 [node name="Sprite2D" type="TextureRect" parent="Control"]
 z_index = -500
+texture_repeat = 2
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -66,10 +68,11 @@ stretch_mode = 3
 layout_mode = 0
 offset_left = 65.0
 offset_top = 42.0
-offset_right = 247.0
+offset_right = 246.0
 offset_bottom = 73.0
 scale = Vector2(0.784451, 0.784451)
 current_tab = 0
+scroll_to_selected = false
 tab_count = 2
 tab_0/title = "Actions"
 tab_1/title = "Conditions"
@@ -200,39 +203,12 @@ theme_override_colors/font_color = Color(0.138034, 0.138034, 0.138034, 1)
 flat = true
 alignment = 1
 selected = 0
-item_count = 15
+item_count = 1
 popup/item_0/text = "Add"
 popup/item_0/id = 0
 popup/item_0/disabled = true
 popup/item_0/separator = true
-popup/item_1/text = "Activate"
-popup/item_1/id = 0
-popup/item_2/text = "Camera follow"
-popup/item_2/id = 1
-popup/item_3/text = "Camera smoothness"
-popup/item_3/id = 11
-popup/item_4/text = "Camera zoom"
-popup/item_4/id = 2
-popup/item_5/text = "End game"
-popup/item_5/id = 12
-popup/item_6/text = "Force animation"
-popup/item_6/id = 14
-popup/item_7/text = "Kill model"
-popup/item_7/id = 3
-popup/item_8/text = "Play sound"
-popup/item_8/id = 13
-popup/item_9/text = "Set control"
-popup/item_9/id = 4
-popup/item_10/text = "Simulate key"
-popup/item_10/id = 5
-popup/item_11/text = "Stop camera"
-popup/item_11/id = 6
-popup/item_12/text = "Trigger once"
-popup/item_12/id = 7
-popup/item_13/text = "Wait"
-popup/item_13/id = 8
-popup/item_14/text = "Custom"
-popup/item_14/id = 9
+script = ExtResource("6_2idus")
 
 [node name="Add_condition_container" type="BoxContainer" parent="Control"]
 visible = false
@@ -290,7 +266,7 @@ flat = true
 alignment = 1
 selected = 0
 fit_to_longest_item = false
-item_count = 10
+item_count = 11
 popup/item_0/text = "Events"
 popup/item_0/id = 0
 popup/item_0/disabled = true
@@ -303,16 +279,18 @@ popup/item_3/text = "Activate"
 popup/item_3/id = 3
 popup/item_4/text = "KeyPressed"
 popup/item_4/id = 4
-popup/item_5/text = "ValueChange"
+popup/item_5/text = "Timeout"
 popup/item_5/id = 5
-popup/item_6/text = "OnShow"
+popup/item_6/text = "ValueChange"
 popup/item_6/id = 6
-popup/item_7/text = "OnHide"
+popup/item_7/text = "OnShow"
 popup/item_7/id = 7
-popup/item_8/text = "Help (information)"
+popup/item_8/text = "OnHide"
 popup/item_8/id = 8
-popup/item_9/text = "Custom"
+popup/item_9/text = "Help (information)"
 popup/item_9/id = 9
+popup/item_10/text = "Custom"
+popup/item_10/id = 10
 
 [node name="choiceorder" type="OptionButton" parent="Control"]
 z_index = 1

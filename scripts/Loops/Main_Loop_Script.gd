@@ -21,9 +21,12 @@ func loopname_set(_loopname: String):
 
 func _on_edit_button_button_down() -> void:
 	# If clicking edit button, then open the loop editor interface.
+	$Loop_Container/LoopButton_containermargin/EditButton.disabled = true
 	var lp = loopeditor_scene.instantiate()
 	root.add_child(lp)
 	lp.receive_loopname(_loopname_window)
+	await get_tree().create_timer(0.5).timeout
+	$Loop_Container/LoopButton_containermargin/EditButton.disabled = false
 func _on_move_up_button_button_down() -> void:
 	get_parent().move_child(self , self.get_index() - 1)
 

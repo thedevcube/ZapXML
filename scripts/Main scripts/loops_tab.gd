@@ -12,11 +12,10 @@ var addloop_window = false
 func _on_add_loop_button_down() -> void:
 	DisplayServer.dialog_input_text("Loop name" , "Insert loop name" , "" , receive_loopname)
 
-var autoloop_n = 1
 # SET THE LOOP NAME ON THE WINDOW TITLE BAR BY CALLING ITS FUNCTION
 func receive_loopname(loop_name: String):
 	if loop_name.is_empty():
-		loop_name = "a_loop"
+		loop_name = "loop"
 	var looptemp_new = loop_template.instantiate()
 	looptemp_new.name = loop_name
 	if loop_area.get_child_count() != 0:

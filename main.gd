@@ -3,7 +3,10 @@ extends Control
 
 func _ready(): # Music, why not
 	var stream = $Musicplayer
+	var stream2 = $AudioStreamPlayer
+	stream2.stream = preload("res://sounds/ui_window_profile.wav")
 	stream.stream = preload("res://music/menu.mp3")
+	stream2.play()
 	stream.play()
 
 # Easter egg, Idea by Gordon, NOT IMPORTANT FOR THE APP'S USAGE
@@ -12,8 +15,7 @@ var text = ""
 
 func _unhandled_input(_event: InputEvent) -> void:
 	if Input.is_key_pressed(KEY_V):
-		text = ""
-		text += "v"
+		text = "v"
 	if Input.is_key_pressed(KEY_E) and not "e" in text:
 		text += "e"
 	if Input.is_key_pressed(KEY_C) and not "c" in text:
@@ -36,7 +38,14 @@ func _on_musicplayer_finished() -> void:
 
 
 func _on_music_togggle_button_down() -> void:
-	if $music_togggle.button_pressed == false:
+	if $buttonscont/music_toggle.button_pressed == false:
 		$Musicplayer.play()
-	if $music_togggle.button_pressed == true:
+	else:
 		$Musicplayer.stop()
+
+
+func toggle_init_defaultvars() -> void:
+	if $buttonscont/init_toggle.button_pressed == false:
+		$buttonscont/initdef_toggle.hide()
+	else:
+		$buttonscont/initdef_toggle.show()

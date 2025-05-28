@@ -16,15 +16,21 @@ func _ready():
 
 
 func state_load(value):
-	print(value)
 	if self.is_class("OptionButton"):
-		self.selected = value
+		self.selected = int(value)
 	if self.is_class("SpinBox"):
 		self.value = value
 	if self.is_class("LineEdit"):
 		self.text = value
 
-func get_value():
-	if self.is_class("OptionButton"):
-		var me = self
-		return me.get_item_text(me.get_selected_id())
+func get_value(as_item = false):
+	var me = self
+	if as_item == false:return me.get_item_text(me.get_selected_id())
+	if as_item == true: return me.get_item_index(me.get_selected())
+
+
+func _on_item_selected(index: int) -> void:
+	var sound = load("res://sounds/" + get_item_text(index) + ".wav")
+	var streamplayer = $"../AudioStreamPlayer"
+	streamplayer.stream = sound
+	streamplayer.play()

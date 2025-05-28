@@ -15,23 +15,28 @@ func _on_button_down() -> void:
 
 
 func convert_list():
-	#converting INIT
-	# Setting up base var
-	compiled_text.text = '<Init>\n    <SetVariable Name="$Active" Value="1"/>\n'
+	compiled_text.text = ''
 
-	# Checks if any variable is required,
-	# this means that some action requested it.
-	if not Global.required_init_vars.is_empty():
-		# For every key add an variable based on it
-		for required_init_key in Global.required_init_vars.keys():
-			compiled_text.text += str("    " + Global.required_init_vars.get(required_init_key))
-	# Repeat for x amount of items and add their metadata to text
-	for i in range(itemlist.get_child_count()):
-		compiled_text.text += ('    ' + itemlist.get_child(i).data + '\n')
+	if $"../buttonscont/init_toggle".button_pressed == true:
+		compiled_text.text += '<Init>\n'
+		#converting INIT
+		# Setting up base init, if on
+		if $"../buttonscont/initdef_toggle".button_pressed == true: compiled_text.text += '    <SetVariable Name="$Active" Value="1"/>\n'
 
-	# Another basic vars
-	compiled_text.text += '    <SetVariable Name="Flag1" Value="0"/>\n'
-	compiled_text.text += '</Init>\n\n'
+		# Checks if any variable is required,
+		# this means that some action requested it.
+		if not Global.required_init_vars.is_empty():
+			# For every key add an variable based on it
+			for required_init_key in Global.required_init_vars.keys():
+				compiled_text.text += str("    " + Global.required_init_vars.get(required_init_key))
+
+		# Repeat for x amount of items and add their metadata to text
+		for i in range(itemlist.get_child_count()):
+			compiled_text.text += ('    ' + itemlist.get_child(i).data + '\n')
+
+		# Another basic vars
+		if $"../buttonscont/initdef_toggle".button_pressed == true: compiled_text.text += '    <SetVariable Name="Flag1" Value="0"/>\n'
+		compiled_text.text += '</Init>\n\n'
 
 
 	#converting LOOP

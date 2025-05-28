@@ -80,6 +80,10 @@ mouse2={
 ]
 }
 
+[layer_names]
+
+2d_render/layer_1="eeeeeee"
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
