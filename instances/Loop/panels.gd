@@ -10,5 +10,7 @@ func get_panel(panelname):
 			return get_node("ActionPanel/Margin/ScrollList")
 		"condition_list":
 			return get_node("ConditionsPanel/Margin/ScrollList")
+		"using_list":
+			return get_node("UsingPanel/Margin/ScrollList")
 		"info_eventnode":
 			return get_node("ActionPanel/Event")

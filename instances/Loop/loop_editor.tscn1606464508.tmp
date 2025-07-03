@@ -1,0 +1,136 @@
+[gd_scene load_steps=3 format=3 uid="uid://pqtbhkj1gwdf"]
+
+[ext_resource type="Script" uid="uid://cwjbsiyi2yhgq" path="res://scripts/Loops/loop_editor/loop_editor_main.gd" id="1_s7x5h"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s7x5h"]
+draw_center = false
+
+[node name="Loopeditor" type="Window"]
+disable_3d = true
+title = "Loop editor"
+initial_position = 1
+size = Vector2i(370, 520)
+unresizable = true
+always_on_top = true
+content_scale_mode = 2
+content_scale_aspect = 1
+script = ExtResource("1_s7x5h")
+
+[node name="NodeGraph" type="GraphEdit" parent="."]
+offset_right = 370.0
+offset_bottom = 520.0
+scroll_offset = Vector2(-113, 0)
+snapping_distance = 10
+right_disconnects = true
+minimap_enabled = false
+show_zoom_buttons = false
+show_grid_buttons = false
+show_arrange_button = false
+
+[node name="ActionNode" type="GraphNode" parent="NodeGraph"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 72.0
+offset_right = 137.0
+offset_bottom = 401.0
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_s7x5h")
+position_offset = Vector2(-89, 72)
+draggable = false
+selectable = false
+title = "Actions"
+slot/0/left_enabled = false
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="NodeGraph/ActionNode"]
+layout_mode = 2
+text = "\"Action\" node"
+fit_content = true
+shortcut_keys_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+
+[node name="AddNode" type="OptionButton" parent="."]
+offset_left = 280.0
+offset_top = 10.0
+offset_right = 346.0
+offset_bottom = 41.0
+flat = true
+alignment = 1
+selected = 0
+fit_to_longest_item = false
+item_count = 2
+popup/item_0/text = "Add"
+popup/item_0/id = 0
+popup/item_0/disabled = true
+popup/item_0/separator = true
+popup/item_1/text = "Simulate key"
+popup/item_1/id = 1
+
+[node name="EventsNode" type="OptionButton" parent="."]
+offset_left = 140.0
+offset_top = 12.0
+offset_right = 223.0
+offset_bottom = 43.0
+tooltip_text = "Events:
+Enter = When entering this trigger
+Exit = When leaving this trigger
+Activate = Only activate when called by an \"Activate ActionID\"
+KeyPressed = Detects any key press, you can specify a key by adding an Key variable inside the init.
+OnShow = When this trigger enters the screen
+OnHide = When this trigger leaves the screen
+OnStartGame = When the level starts"
+flat = true
+alignment = 1
+selected = 0
+fit_to_longest_item = false
+item_count = 9
+popup/item_0/text = "Events"
+popup/item_0/id = 0
+popup/item_0/disabled = true
+popup/item_0/separator = true
+popup/item_1/text = "Enter"
+popup/item_1/id = 1
+popup/item_2/text = "Exit"
+popup/item_2/id = 2
+popup/item_3/text = "Activate"
+popup/item_3/id = 3
+popup/item_4/text = "KeyPressed"
+popup/item_4/id = 4
+popup/item_5/text = "OnStartGame"
+popup/item_5/id = 5
+popup/item_6/text = "OnShow"
+popup/item_6/id = 6
+popup/item_7/text = "OnHide"
+popup/item_7/id = 7
+popup/item_8/text = "Help (information)"
+popup/item_8/id = 8
+
+[node name="SaveButton" type="Button" parent="."]
+offset_left = 21.0
+offset_top = 467.0
+offset_right = 65.0
+offset_bottom = 498.0
+text = "  Save  "
+
+[node name="Load" type="Button" parent="."]
+offset_left = 84.0
+offset_top = 467.0
+offset_right = 145.0
+offset_bottom = 498.0
+text = "Load"
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="connection_request" from="NodeGraph" to="." method="_on_node_graph_connection_request"]
+[connection signal="disconnection_request" from="NodeGraph" to="." method="_on_node_graph_disconnection_request"]
+[connection signal="item_selected" from="AddNode" to="." method="_on_add_node_item_selected"]
+[connection signal="item_selected" from="EventsNode" to="." method="_on_events_node_item_selected"]
+[connection signal="button_down" from="SaveButton" to="." method="_on_save_button_button_down"]
+[connection signal="button_down" from="Load" to="." method="_on_load_button_down"]

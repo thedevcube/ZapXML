@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<root>
+	<action codename='Camera' filename="Camera follow" merge="1"/>
+	<action codename='Camera' filename="Camera smoothness" merge="1"/>
+	<action codename='Activate' filename="Activate"/>
+	<action codename='AppendValue' filename="Append value"/>
+	<action codename='Camera' filename="Camera zoom" merge="1"/>
+	<action codename='Custom' filename="Custom"/>
+	<action codename='EndGame' filename="End game"/>
+	<action codename='ForceAnimation' filename="Force animation"/>
+	<action codename='Kill' filename="Kill model"/>
+	<action codename='Sound' filename="Play sound"/>
+	<action codename='Control' filename="Set control"/>
+	<action codename='SetTimer' filename="Set timer"/>
+	<action codename='SetVariable' filename="Set variable"/>
+	<action codename='MessageOnScreen' filename="Display text"/>
+	<action codename='Press' filename="Simulate key"/>
+	<action codename='Camera' filename="Camera stop"/>
+	<action codename='Transform' filename="Transform" />
+	<action codename='Wait' filename="Wait frames"/>
+
+	<condition codename='Equal' filename="AI"/>
+	<condition custom="1">
+
+	<using custom="1">
+
+</root>

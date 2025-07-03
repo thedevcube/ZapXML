@@ -21,11 +21,20 @@ run/low_processor_mode=true
 
 Global="*res://global.gd"
 
+[debug]
+
+gdscript/warnings/unused_variable=0
+gdscript/warnings/unused_local_constant=0
+
 [display]
 
 window/subwindows/embed_subwindows=false
 window/stretch/mode="canvas_items"
 window/per_pixel_transparency/allowed=true
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/collapsible_container/plugin.cfg")
 
 [file_customization]
 
@@ -40,6 +49,12 @@ folder_colors={
 "res://scripts/": "orange",
 "res://sounds/": "orange"
 }
+
+[global_group]
+
+Init=""
+Loops=""
+Xml=""
 
 [gui]
 
@@ -77,6 +92,16 @@ vector={
 mouse2={
 "deadzone": 0.2,
 "events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":2,"position":Vector2(108, 10),"global_position":Vector2(115, 47),"factor":1.0,"button_index":2,"canceled":false,"pressed":true,"double_click":false,"script":null)
+]
+}
+Mouse1={
+"deadzone": 0.2,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":1,"position":Vector2(138, 21),"global_position":Vector2(145, 58),"factor":1.0,"button_index":1,"canceled":false,"pressed":true,"double_click":false,"script":null)
+]
+}
+F11={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194342,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
 ]
 }
 

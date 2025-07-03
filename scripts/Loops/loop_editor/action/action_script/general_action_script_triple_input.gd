@@ -1,8 +1,11 @@
 extends VBoxContainer
+signal data_changed
 # A base script for all actions, so i dont have to create a script for each of em
 
 @export_multiline var template = ""
 
+@export var internal_name: String
+@export var getter_order: Array = [0 , 1 , 2]
 ## the node where all the actions are stored
 @onready var actionlist = get_parent()
 ## The node that stores the value
@@ -19,8 +22,10 @@ extends VBoxContainer
 ## When converting, the converter gets THIS variable.
 @export var convert_data = ''
 
+func _ready() -> void:
+	load_values()
 
-func _ready():
+func load_values():
 # auto select when reloading this action
 	value_node.state_load(state)
 	value_node_2.state_load(state_2)
@@ -51,4 +56,23 @@ func _process(_delta):
 	state_3 = value_node_3.get_value(true)
 	if has_formatting == true:
 		convert_data = template % [value_node.get_value() , value_node_2.get_value() , value_node_3.get_value()]
+		data_changed.emit()
 @export var has_formatting = true
+
+func transmit_data(data , parser: XMLParser = null , textnode = null , loading = false):
+	if not loading and data is Dictionary: 
+		state = data.get(data.keys()[getter_order[0]])
+		state_2 = data.get(data.keys()[getter_order[1]])
+	else: 
+		print("DATA IS ", data)
+		state = data[0]
+		state_2 = data[1]
+		print("STATES: " , state , state_2)
+	load_values()
+
+func get_as_dic(what):
+	match what:
+		"name":
+			return [value_node.get_value() , value_node_2.get_value()]
+		"data":
+			return [internal_name , "actions"]

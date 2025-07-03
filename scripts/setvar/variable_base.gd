@@ -7,7 +7,7 @@ extends Panel
 @onready var valuenode = get_node("value")
 
 func _ready():
-	valuenode.update_data.connect(Callable(self , 'alter_data') )
+	valuenode.update_data.connect(alter_data)
 
 func alter_data():
 	data = template % [type , valuenode.get_var_value()]

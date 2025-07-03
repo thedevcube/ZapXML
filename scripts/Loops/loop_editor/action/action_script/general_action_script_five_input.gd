@@ -1,8 +1,11 @@
 extends VBoxContainer
+signal data_changed
 # A base script for all actions, so i dont have to create a script for each of em
 
 @export_multiline var template = ""
 
+@export var internal_name: String
+@export var getter_order: Array = [1,2,3,4,5]
 ## the node where all the actions are stored
 @onready var actionlist = get_parent()
 ## The node that stores the value
@@ -23,11 +26,13 @@ extends VBoxContainer
 ## When converting, the converter gets THIS variable.
 @export var convert_data = ''
 
-
 func _ready():
+	load_values()
+
+func load_values():
 # auto select when reloading this action
 	value_node.state_load(state)
-	value_node_2.state_load(state_2)
+	if value_node_2 != null: value_node_2.state_load(state_2)
 	value_node_3.state_load(state_3)
 	value_node_4.state_load(state_4)
 	value_node_5.state_load(state_5)
@@ -57,6 +62,28 @@ func _process(_delta):
 	state_4 = value_node_4.get_value(get_dropdown_as_item)
 	state_5 = value_node_5.get_value(get_dropdown_as_item)
 	if has_formatting == true:
-		convert_data = template % [value_node.get_value() , value_node_2.get_value() , value_node_3.get_value() , value_node_4.get_value() , value_node_5.get_value()]
+		convert_data = template % [value_node.get_value() , value_node_2.get_value(), value_node_3.get_value() , value_node_4.get_value() , value_node_5.get_value()]
+		data_changed.emit()
 @export var has_formatting = true
 @export var get_dropdown_as_item = false
+
+func transmit_data(data , parser: XMLParser = null , textnode = null , loading = false):
+	if not loading and data is Dictionary: 
+		state = data.get(data.keys()[getter_order[0]])
+		state_2 = data.get(data.keys()[getter_order[1]])
+		state_3 = data.get(data.keys()[getter_order[2]])
+		state_4 = data.get(data.keys()[getter_order[3]])
+	else: 
+		state = data[0]
+		state_2 = data[1]
+		state_3 = data[2]
+		state_4 = data[3]
+		state_5 = data[4]
+	load_values()
+
+func get_as_dic(what):
+	match what:
+		"name":
+			return [value_node.get_value() , value_node_2.get_value(), value_node_3.get_value() , value_node_4.get_value() , value_node_5.get_value() , randf_range(0 , 100)]
+		"data":
+			return [internal_name , "actions"]

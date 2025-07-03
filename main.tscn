@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://mmx6wnwjabl7"]
+[gd_scene load_steps=16 format=3 uid="uid://mmx6wnwjabl7"]
 
 [ext_resource type="Script" uid="uid://8j7khmslm00r" path="res://main.gd" id="1_lquwl"]
 [ext_resource type="Script" uid="uid://7cukalsj81vs" path="res://scripts/Main scripts/main_scene/convert_button.gd" id="2_5vw27"]
@@ -7,7 +7,10 @@
 [ext_resource type="AudioStream" uid="uid://ccuu7privl8y8" path="res://sounds/m_jump1.wav" id="6_7mycd"]
 [ext_resource type="Texture2D" uid="uid://dhfphv8b4wbe3" path="res://images/track_preloader_bg.png" id="7_272bh"]
 [ext_resource type="Script" uid="uid://dhuo0eagpquer" path="res://fadein.gd" id="8_5vw27"]
+[ext_resource type="PackedScene" uid="uid://bv6re2tijt7k8" path="res://instances/Popups/import_xml.scn" id="9_kek77"]
+[ext_resource type="Script" uid="uid://bwvorgu0neu7v" path="res://scripts/clear_init.gd" id="10_4c57u"]
 [ext_resource type="Script" uid="uid://dgvy77c2ar3pn" path="res://scripts/Main scripts/loops_tab.gd" id="10_efxa6"]
+[ext_resource type="PackedScene" uid="uid://d36ayb4425b8s" path="res://instances/Popups/complex_name_info.scn" id="11_efxa6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_272bh"]
 bg_color = Color(0.168627, 0.168627, 0.168627, 0.290196)
@@ -27,7 +30,6 @@ skew = Vector2(-1.766, 0)
 border_width_top = 4
 
 [node name="Control" type="Control"]
-clip_contents = true
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -38,23 +40,23 @@ script = ExtResource("1_lquwl")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -10
-position = Vector2(508, 484)
-scale = Vector2(0.633984, 0.633984)
+position = Vector2(577.266, 323.55)
+scale = Vector2(0.566341, 0.425065)
 texture = ExtResource("7_272bh")
 
 [node name="version" type="RichTextLabel" parent="."]
 layout_mode = 2
-offset_right = 22.0
+offset_right = 34.0
 offset_bottom = 23.0
-text = "V1"
+text = "V1.2"
 fit_content = true
 scroll_active = false
 
 [node name="credit" type="RichTextLabel" parent="."]
 layout_mode = 0
-offset_left = 26.0
+offset_left = 34.0
 offset_top = 10.0
-offset_right = 123.0
+offset_right = 131.0
 offset_bottom = 33.0
 scale = Vector2(0.650222, 0.650222)
 text = "Thelastcube"
@@ -86,9 +88,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -0.223999
 offset_top = -30.936
-offset_right = -166.0
+offset_right = -165.0
 offset_bottom = -611.0
 mouse_default_cursor_shape = 2
+theme_override_constants/h_separation = 150
 current_tab = 0
 scrolling_enabled = false
 tab_count = 3
@@ -97,7 +100,7 @@ tab_1/title = "Loops"
 tab_2/title = "XML"
 script = ExtResource("3_kek77")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="Panel" parent="." groups=["Init"]]
 layout_mode = 2
 offset_left = 820.0
 offset_top = 38.0
@@ -122,7 +125,7 @@ size_flags_vertical = 3
 tooltip_text = "Your init variables go here."
 mouse_default_cursor_shape = 2
 
-[node name="ItemXML_compiledtext" type="TextEdit" parent="."]
+[node name="ItemXML_compiledtext" type="TextEdit" parent="." groups=["Xml"]]
 visible = false
 layout_mode = 0
 offset_left = 698.0
@@ -151,20 +154,15 @@ shortcut = SubResource("Shortcut_lquwl")
 alignment = 1
 autowrap_mode = 3
 selected = 0
-item_count = 4
+item_count = 1
 popup/item_0/text = "Add"
 popup/item_0/id = 0
 popup/item_0/disabled = true
 popup/item_0/separator = true
-popup/item_1/text = "Custom"
-popup/item_1/id = 1
-popup/item_2/text = "AI number"
-popup/item_2/id = 2
-popup/item_3/text = "Node type"
-popup/item_3/id = 3
 script = ExtResource("2_h2yge")
+path = "res://instances/Setvars"
 
-[node name="Loops_tab" type="PanelContainer" parent="."]
+[node name="Loops_tab" type="PanelContainer" parent="." groups=["Loops"]]
 visible = false
 layout_mode = 0
 offset_left = 820.0
@@ -176,11 +174,17 @@ script = ExtResource("10_efxa6")
 [node name="MarginContainer" type="MarginContainer" parent="Loops_tab"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Loops_tab/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Loops_tab/MarginContainer"]
 layout_mode = 2
-theme_override_constants/separation = 10
 
-[node name="Add_loop" type="Button" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="Loops_tab/MarginContainer/ScrollContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 5
+
+[node name="Add_loop" type="Button" parent="." groups=["Loops"]]
 visible = false
 layout_mode = 2
 offset_left = 1059.0
@@ -226,12 +230,12 @@ theme_override_styles/separator = SubResource("StyleBoxFlat_5vw27")
 
 [node name="music_toggle" type="CheckButton" parent="buttonscont"]
 layout_mode = 2
-button_pressed = true
 text = "Music"
 
-[node name="HSeparator3" type="HSeparator" parent="buttonscont"]
+[node name="sfx_toggle" type="CheckButton" parent="buttonscont"]
 layout_mode = 2
-theme_override_styles/separator = SubResource("StyleBoxFlat_5vw27")
+button_pressed = true
+text = "Sound effects"
 
 [node name="fadein" type="Sprite2D" parent="."]
 visible = false
@@ -239,6 +243,61 @@ modulate = Color(0, 0, 0, 1)
 position = Vector2(544, 257)
 texture = ExtResource("7_272bh")
 script = ExtResource("8_5vw27")
+
+[node name="xmlreader" parent="." instance=ExtResource("9_kek77")]
+layout_mode = 1
+offset_left = 28.0
+offset_top = 67.0
+offset_right = 28.0
+offset_bottom = 67.0
+
+[node name="Clear_button" type="Button" parent="." node_paths=PackedStringArray("delete_node") groups=["Init"]]
+layout_mode = 0
+offset_left = 739.0
+offset_top = 606.0
+offset_right = 810.0
+offset_bottom = 642.0
+text = "Clear"
+script = ExtResource("10_4c57u")
+delete_node = NodePath("../Panel/Initlist_scroll/Init_List")
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="Clear_button"]
+disable_3d = true
+position = Vector2i(510, 530)
+size = Vector2i(200, 104)
+unresizable = true
+popup_window = true
+ok_button_text = "Yes"
+dialog_text = "Are you sure you want to clear the init?"
+dialog_autowrap = true
+
+[node name="Clear_button2" type="Button" parent="." node_paths=PackedStringArray("delete_node") groups=["Loops"]]
+visible = false
+layout_mode = 0
+offset_left = 739.0
+offset_top = 606.0
+offset_right = 810.0
+offset_bottom = 642.0
+text = "Clear"
+script = ExtResource("10_4c57u")
+delete_node = NodePath("../Loops_tab/MarginContainer/ScrollContainer/VBoxContainer")
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="Clear_button2"]
+auto_translate_mode = 1
+disable_3d = true
+position = Vector2i(510, 530)
+size = Vector2i(200, 104)
+unresizable = true
+popup_window = true
+ok_button_text = "Yes"
+dialog_text = "Are you sure you want to clear the loops?"
+dialog_autowrap = true
+
+[node name="complex_names" parent="." instance=ExtResource("11_efxa6")]
+offset_left = 436.0
+offset_top = -9.0
+offset_right = 436.0
+offset_bottom = -9.0
 
 [connection signal="button_down" from="ConvertButton" to="ConvertButton" method="_on_button_down"]
 [connection signal="tab_changed" from="ItemList_tabs" to="ItemList_tabs" method="_on_tab_changed"]
@@ -248,3 +307,13 @@ script = ExtResource("8_5vw27")
 [connection signal="finished" from="Musicplayer" to="." method="_on_musicplayer_finished"]
 [connection signal="pressed" from="buttonscont/init_toggle" to="." method="toggle_init_defaultvars"]
 [connection signal="button_down" from="buttonscont/music_toggle" to="." method="_on_music_togggle_button_down"]
+[connection signal="button_down" from="buttonscont/sfx_toggle" to="." method="soundtoggle"]
+[connection signal="button_down" from="Clear_button" to="Clear_button" method="pressed"]
+[connection signal="canceled" from="Clear_button/ConfirmationDialog" to="Clear_button" method="canceled"]
+[connection signal="confirmed" from="Clear_button/ConfirmationDialog" to="Clear_button" method="confirmed"]
+[connection signal="button_down" from="Clear_button2" to="Clear_button2" method="pressed"]
+[connection signal="canceled" from="Clear_button2/ConfirmationDialog" to="Clear_button2" method="canceled"]
+[connection signal="confirmed" from="Clear_button2/ConfirmationDialog" to="Clear_button2" method="confirmed"]
+
+[editable path="xmlreader"]
+[editable path="complex_names"]

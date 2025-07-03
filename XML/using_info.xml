@@ -1,0 +1,14 @@
+<info>
+	<usingtype name="None"/>
+	<usingtype name="AI"/>
+	<usingtype name="Animation"/>
+	<usingtype name="Bool"/>
+	<usingtype name="Int"/>
+	<usingtype name="Key"/>
+	<usingtype name="Model"/>
+	<usingtype name="Orientation"/>
+	<usingtype name="Sound"/>
+	<usingtype name="String"/>
+	<usingtype name="UInt"/>
+	<usingtype name="Zoom"/>
+</info>

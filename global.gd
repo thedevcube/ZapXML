@@ -1,5 +1,7 @@
 extends Node
+signal AOT_toggle
 
+var volume = 1
 var warning_used = false
 ##The required variables
 var required_init_vars = {}
@@ -7,8 +9,10 @@ var required_init_vars = {}
 var document_folder: String = (OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS) + "/ZapXML_temporary_data/")
 ## user/documents/zapxml temporary folder/loop_data
 var zap_folder_loop: String = (OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS) + "/ZapXML_temporary_data/loop_data/")
+@export var script_holder: Node
 
 func _ready():
+	get_window().mode = Window.MODE_MAXIMIZED
 	check_for_main_folder()
 
 ## Checks if the main folder exists
@@ -38,7 +42,32 @@ func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST: 
 		DisplayServer.dialog_show("Confirm" , "Are you sure you want to exit? none of your loops or init will be saved.", PackedStringArray(["Yes" , "No"]) , exitconfirm)
 
-func show_warning(message: String):
-	var warning_scene = preload("res://instances/UI/warning.scn").instantiate()
-	get_tree().current_scene.add_child(warning_scene)
-	warning_scene.show_message(message)
+func load_xml(text: String , node: Node):
+	script_holder = node
+	script_holder.load_xml_def(text)
+
+func display_loop(node: Node , callable: Callable):
+	for child in node.get_parent().get_children():
+		if child.name.begins_with("loop name input"):
+			child.queue_free()
+	var ins = preload("res://instances/Popups/loop_input.scn").instantiate()
+	node.get_parent().add_child(ins)
+	ins.name = "loop name input"
+	ins.position = get_viewport().get_mouse_position() - Vector2(172.0 , 0)
+	ins.get_child(0).callback = callable
+	return
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("F11"):
+		print("test")
+		get_window().mode = Window.MODE_FULLSCREEN if get_window().mode != Window.MODE_FULLSCREEN else Window.MODE_WINDOWED
+
+func get_all_children(node) -> Array:
+	var nodes : Array = []
+	for N in node.get_children():
+		if N.get_child_count() > 0:
+			nodes.append(N)
+			nodes.append_array(get_all_children(N))
+		else:
+			nodes.append(N)
+	return nodes

@@ -3,7 +3,6 @@ extends OptionButton
 func _ready():
 	var dir = DirAccess
 	dir.open("res://sounds/")
-	print(dir.get_files_at("res://sounds/"))
 	# Clear items
 	clear()
 	var parser = XMLParser.new()
@@ -17,7 +16,14 @@ func _ready():
 
 func state_load(value):
 	if self.is_class("OptionButton"):
-		self.selected = int(value)
+		if value is int or value is float: 
+			self.selected = int(value)
+		else:
+			for i in range(item_count):
+				if get_item_text(i) == value:
+					select(i)
+					break
+
 	if self.is_class("SpinBox"):
 		self.value = value
 	if self.is_class("LineEdit"):
@@ -25,8 +31,8 @@ func state_load(value):
 
 func get_value(as_item = false):
 	var me = self
-	if as_item == false:return me.get_item_text(me.get_selected_id())
-	if as_item == true: return me.get_item_index(me.get_selected())
+	if as_item == false:return get_item_text(get_selected_id())
+	if as_item == true: return get_item_index(get_selected())
 
 
 func _on_item_selected(index: int) -> void:

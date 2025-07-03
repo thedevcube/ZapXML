@@ -1,0 +1,199 @@
+[gd_scene load_steps=12 format=3 uid="uid://mmx6wnwjabl7"]
+
+[ext_resource type="Script" uid="uid://dxnyhmf4t2qiu" path="res://scripts/Main scripts/item_list.gd" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://rw76vtxxh0a2" path="res://main.gd" id="1_lquwl"]
+[ext_resource type="Script" uid="uid://lon2jlmihdqd" path="res://scripts/Main scripts/main_scene/convert_button.gd" id="2_5vw27"]
+[ext_resource type="Script" uid="uid://bkoxhk75iuacw" path="res://scripts/Main scripts/main_scene/add_to_itemlist_script.gd" id="2_h2yge"]
+[ext_resource type="Script" uid="uid://hv34ur41iu0i" path="res://scripts/Main scripts/main_scene/main_tabs_script.gd" id="3_kek77"]
+[ext_resource type="Script" uid="uid://c1h4m8dcjvghk" path="res://scripts/Main scripts/main_scene/Deleteitem.gd" id="6_7mycd"]
+[ext_resource type="Script" uid="uid://dgvy77c2ar3pn" path="res://scripts/Main scripts/loops_tab.gd" id="10_efxa6"]
+
+[sub_resource type="Theme" id="Theme_0xm2m"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_1bvp3"]
+device = -1
+pressed = true
+keycode = 65
+unicode = 97
+
+[sub_resource type="Shortcut" id="Shortcut_lquwl"]
+events = [SubResource("InputEventKey_1bvp3")]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4c57u"]
+bg_color = Color(0.216288, 0.2084, 0.202595, 1)
+corner_radius_top_left = 17
+corner_radius_top_right = 17
+corner_radius_bottom_right = 17
+corner_radius_bottom_left = 17
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_lquwl")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
+
+[node name="ConvertButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 597.0
+offset_right = 183.0
+offset_bottom = 635.0
+mouse_default_cursor_shape = 2
+text = "Convert"
+script = ExtResource("2_5vw27")
+
+[node name="ItemList_tabs" type="TabBar" parent="."]
+layout_mode = 0
+offset_left = 820.0
+offset_top = 6.0
+offset_right = 986.0
+offset_bottom = 37.0
+mouse_default_cursor_shape = 2
+current_tab = 0
+scrolling_enabled = false
+tab_count = 3
+tab_0/title = "Init"
+tab_1/title = "Loops"
+tab_2/title = "XML"
+script = ExtResource("3_kek77")
+
+[node name="Init_List" type="ItemList" parent="." groups=["ItemList"]]
+clip_contents = false
+layout_mode = 0
+offset_left = 820.0
+offset_top = 38.0
+offset_right = 1112.0
+offset_bottom = 611.0
+scale = Vector2(1, 0.997505)
+tooltip_text = "Your init variables go here."
+mouse_default_cursor_shape = 2
+theme = SubResource("Theme_0xm2m")
+select_mode = 1
+allow_reselect = true
+allow_rmb_select = true
+script = ExtResource("1_ig7tw")
+
+[node name="ItemXML_compiledtext" type="RichTextLabel" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 820.0
+offset_top = 40.0
+offset_right = 1153.0
+offset_bottom = 1339.0
+focus_mode = 2
+text = "No code yet."
+selection_enabled = true
+drag_and_drop_selection_enabled = false
+
+[node name="Add" type="OptionButton" parent="."]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 25.0
+offset_right = 147.0
+offset_bottom = 60.0
+scale = Vector2(1.12322, 1.01469)
+tooltip_text = "Add, may it be a action, a condition or whatever you kids use these days for vectorier xml coding."
+mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_lquwl")
+alignment = 1
+autowrap_mode = 3
+selected = 0
+item_count = 3
+popup/item_0/text = "Add"
+popup/item_0/id = 0
+popup/item_0/disabled = true
+popup/item_0/separator = true
+popup/item_1/text = "AI number"
+popup/item_1/id = 2
+popup/item_2/text = "Node type"
+popup/item_2/id = 3
+script = ExtResource("2_h2yge")
+
+[node name="ItemOptions" type="Control" parent="."]
+clip_children = 2
+anchors_preset = 0
+offset_left = -21.64
+offset_right = -21.64
+scale = Vector2(1.12322, 1.01469)
+
+[node name="Panel2" type="Panel" parent="ItemOptions"]
+layout_mode = 0
+offset_left = -116.059
+offset_top = -28.5802
+offset_right = 10.9408
+offset_bottom = -2.58015
+
+[node name="Panel" type="Panel" parent="ItemOptions"]
+layout_mode = 0
+offset_left = -100.0
+offset_top = 7.0
+offset_right = -1.0
+offset_bottom = 65.0
+scale = Vector2(1, 0.829776)
+mouse_default_cursor_shape = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4c57u")
+
+[node name="Delete" type="Button" parent="ItemOptions" groups=["mb"]]
+layout_mode = 0
+offset_left = -97.3629
+offset_top = 15.7684
+offset_right = 0.637009
+offset_bottom = 46.7684
+scale = Vector2(0.958348, 1)
+tooltip_text = "Bind: Del"
+mouse_default_cursor_shape = 2
+disabled = true
+text = "Delete item"
+script = ExtResource("6_7mycd")
+
+[node name="OptionsText" type="RichTextLabel" parent="ItemOptions"]
+layout_mode = 0
+offset_left = -113.346
+offset_top = -26.088
+offset_right = 10.6536
+offset_bottom = -3.08795
+scale = Vector2(1.00628, 1.0199)
+text = "Item properties"
+fit_content = true
+
+[node name="Loops_tab" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 820.0
+offset_top = 40.0
+offset_right = 1152.0
+offset_bottom = 648.0
+script = ExtResource("10_efxa6")
+
+[node name="MarginContainer" type="MarginContainer" parent="Loops_tab"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Loops_tab/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="tabinfo" type="RichTextLabel" parent="Loops_tab/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Loops"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="Add_loop" type="Button" parent="."]
+visible = false
+layout_mode = 2
+offset_left = 1066.0
+offset_top = 40.0
+offset_right = 1152.0
+offset_bottom = 71.0
+text = "Add"
+
+[connection signal="button_down" from="ConvertButton" to="ConvertButton" method="_on_button_down"]
+[connection signal="tab_changed" from="ItemList_tabs" to="ItemList_tabs" method="_on_tab_changed"]
+[connection signal="empty_clicked" from="Init_List" to="Init_List" method="_on_empty_clicked"]
+[connection signal="item_clicked" from="Init_List" to="Init_List" method="_on_item_clicked"]
+[connection signal="item_selected" from="Add" to="Add" method="_on_item_selected"]
+[connection signal="button_down" from="ItemOptions/Delete" to="ItemOptions/Delete" method="_on_button_down"]
+[connection signal="button_down" from="Add_loop" to="Loops_tab" method="_on_add_loop_button_down"]

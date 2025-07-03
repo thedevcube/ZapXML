@@ -5,7 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://dhfphv8b4wbe3" path="res://images/track_preloader_bg.png" id="2_jgd4j"]
 [ext_resource type="Script" uid="uid://d202eyjrr6qh8" path="res://instances/Loop/panels.gd" id="2_udqq3"]
 [ext_resource type="Script" uid="uid://bwr6txjhm6fg6" path="res://scripts/Loops/loop_editor/action/condition_tree.gd" id="3_5w7bp"]
-[ext_resource type="Script" uid="uid://dv3ek8aswmtn1" path="res://scripts/Loops/loop_editor/add_node.gd" id="6_2idus"]
+[ext_resource type="Script" uid="uid://bwvorgu0neu7v" path="res://scripts/clear_init.gd" id="5_kybkq"]
+[ext_resource type="Script" uid="uid://dv3ek8aswmtn1" path="res://scripts/Loops/loop_editor/base_add.gd" id="6_2idus"]
 [ext_resource type="Script" uid="uid://dhuo0eagpquer" path="res://fadein.gd" id="6_vm77g"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_626kg"]
@@ -21,21 +22,14 @@ corner_radius_bottom_left = 10
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_udqq3"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5w7bp"]
-content_margin_left = 3.0
-bg_color = Color(0.147672, 0.147672, 0.147672, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
 [node name="Loopeditor" type="Window"]
 disable_3d = true
 title = "Loop editor"
 initial_position = 1
 size = Vector2i(430, 550)
 always_on_top = true
-content_scale_aspect = 4
+content_scale_mode = 1
+content_scale_aspect = 1
 script = ExtResource("1_s7x5h")
 
 [node name="Control" type="Control" parent="."]
@@ -68,20 +62,21 @@ stretch_mode = 3
 layout_mode = 0
 offset_left = 65.0
 offset_top = 42.0
-offset_right = 246.0
+offset_right = 310.0
 offset_bottom = 73.0
 scale = Vector2(0.784451, 0.784451)
 current_tab = 0
+tab_alignment = 1
 scroll_to_selected = false
-tab_count = 2
+tab_count = 3
 tab_0/title = "Actions"
 tab_1/title = "Conditions"
+tab_2/title = "Using"
 
 [node name="panels" type="Node" parent="Control"]
 script = ExtResource("2_udqq3")
 
-[node name="ActionPanel" type="ScrollContainer" parent="Control/panels"]
-clip_contents = false
+[node name="ActionPanel" type="ScrollContainer" parent="Control/panels" groups=["Action nodes"]]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -91,22 +86,26 @@ offset_right = -65.6225
 offset_bottom = -33.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_626kg")
 draw_focus_border = true
 horizontal_scroll_mode = 0
 metadata/_edit_use_anchors_ = true
 
-[node name="Margin" type="MarginContainer" parent="Control/panels/ActionPanel"]
+[node name="Margin" type="MarginContainer" parent="Control/panels/ActionPanel" groups=["Action nodes"]]
+clip_contents = true
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 0
 theme_override_constants/margin_top = 25
 
-[node name="ScrollList" type="FlowContainer" parent="Control/panels/ActionPanel/Margin"]
+[node name="ScrollList" type="FlowContainer" parent="Control/panels/ActionPanel/Margin" groups=["Action nodes"]]
+clip_contents = true
+custom_minimum_size = Vector2(298.755, 425)
 layout_mode = 2
-last_wrap_alignment = 2
 script = ExtResource("2_626kg")
 
-[node name="info" type="RichTextLabel" parent="Control/panels/ActionPanel"]
+[node name="info" type="RichTextLabel" parent="Control/panels/ActionPanel" groups=["Action nodes"]]
 custom_minimum_size = Vector2(63, 0)
 layout_mode = 2
 size_flags_horizontal = 6
@@ -116,7 +115,8 @@ scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Event" type="RichTextLabel" parent="Control/panels/ActionPanel"]
+[node name="Event" type="RichTextLabel" parent="Control/panels/ActionPanel" groups=["Action nodes"]]
+clip_contents = false
 custom_minimum_size = Vector2(120.02, 0)
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0.190109, 0.19502, 0.159756, 1)
@@ -127,9 +127,29 @@ scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ConditionsPanel" type="ScrollContainer" parent="Control/panels"]
+[node name="Clear_button" type="Button" parent="Control/panels/ActionPanel/Event" node_paths=PackedStringArray("delete_node") groups=["Init"]]
+layout_mode = 2
+offset_left = 242.378
+offset_top = 8.0
+offset_right = 291.378
+offset_bottom = 39.0
+text = "Clear"
+script = ExtResource("5_kybkq")
+delete_node = NodePath("../../Margin/ScrollList")
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="Control/panels/ActionPanel/Event/Clear_button"]
+auto_translate_mode = 1
+disable_3d = true
+position = Vector2i(510, 530)
+size = Vector2i(200, 104)
+unresizable = true
+popup_window = true
+ok_button_text = "Yes"
+dialog_text = "Are you sure you want to clear the actions?"
+dialog_autowrap = true
+
+[node name="ConditionsPanel" type="ScrollContainer" parent="Control/panels" groups=["Condition nodes"]]
 visible = false
-clip_contents = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -144,17 +164,20 @@ draw_focus_border = true
 horizontal_scroll_mode = 0
 metadata/_edit_use_anchors_ = true
 
-[node name="Margin" type="MarginContainer" parent="Control/panels/ConditionsPanel"]
+[node name="Margin" type="MarginContainer" parent="Control/panels/ConditionsPanel" groups=["Condition nodes"]]
+clip_contents = true
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_constants/margin_top = 25
 
-[node name="ScrollList" type="FlowContainer" parent="Control/panels/ConditionsPanel/Margin"]
+[node name="ScrollList" type="FlowContainer" parent="Control/panels/ConditionsPanel/Margin" groups=["Condition nodes"]]
+clip_contents = true
 layout_mode = 2
 last_wrap_alignment = 2
 script = ExtResource("3_5w7bp")
 
-[node name="info" type="RichTextLabel" parent="Control/panels/ConditionsPanel"]
+[node name="info" type="RichTextLabel" parent="Control/panels/ConditionsPanel" groups=["Condition nodes"]]
+clip_contents = false
 custom_minimum_size = Vector2(84.32, 0)
 layout_mode = 2
 size_flags_horizontal = 6
@@ -163,6 +186,81 @@ fit_content = true
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Clear_button" type="Button" parent="Control/panels/ConditionsPanel/info" node_paths=PackedStringArray("delete_node") groups=["Init"]]
+offset_left = 135.378
+offset_top = 8.0
+offset_right = 184.378
+offset_bottom = 39.0
+text = "Clear"
+script = ExtResource("5_kybkq")
+delete_node = NodePath("../../Margin/ScrollList")
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="Control/panels/ConditionsPanel/info/Clear_button"]
+auto_translate_mode = 1
+disable_3d = true
+position = Vector2i(510, 530)
+size = Vector2i(200, 104)
+unresizable = true
+popup_window = true
+ok_button_text = "Yes"
+dialog_text = "Are you sure you want to clear the conditions?"
+dialog_autowrap = true
+
+[node name="UsingPanel" type="ScrollContainer" parent="Control/panels" groups=["Using nodes"]]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 65.6225
+offset_top = 66.0
+offset_right = -65.6225
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_626kg")
+draw_focus_border = true
+horizontal_scroll_mode = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="Margin" type="MarginContainer" parent="Control/panels/UsingPanel" groups=["Using nodes"]]
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/margin_top = 25
+
+[node name="ScrollList" type="FlowContainer" parent="Control/panels/UsingPanel/Margin" groups=["Using nodes"]]
+clip_contents = true
+layout_mode = 2
+last_wrap_alignment = 2
+
+[node name="info" type="Label" parent="Control/panels/UsingPanel" groups=["Using nodes"]]
+custom_minimum_size = Vector2(84.32, 0)
+layout_mode = 2
+size_flags_horizontal = 6
+text = "Using"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Clear_button" type="Button" parent="Control/panels/UsingPanel/info" node_paths=PackedStringArray("delete_node") groups=["Init"]]
+offset_left = 135.378
+offset_top = 8.0
+offset_right = 184.378
+offset_bottom = 39.0
+text = "Clear"
+script = ExtResource("5_kybkq")
+delete_node = NodePath("../../Margin/ScrollList")
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="Control/panels/UsingPanel/info/Clear_button"]
+auto_translate_mode = 1
+disable_3d = true
+position = Vector2i(510, 530)
+size = Vector2i(200, 104)
+unresizable = true
+popup_window = true
+ok_button_text = "Yes"
+dialog_text = "Are you sure you want to clear using variables?"
+dialog_autowrap = true
 
 [node name="Save_container" type="BoxContainer" parent="Control"]
 layout_mode = 1
@@ -185,7 +283,7 @@ size_flags_horizontal = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_y78vq")
 text = "  Save  "
 
-[node name="Add_container" type="BoxContainer" parent="Control"]
+[node name="Add_container" type="BoxContainer" parent="Control" groups=["Action nodes"]]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.00697674
@@ -196,7 +294,7 @@ offset_right = -69.0
 theme_override_constants/separation = 160
 metadata/_edit_use_anchors_ = true
 
-[node name="AddNode" type="OptionButton" parent="Control/Add_container"]
+[node name="AddNode" type="OptionButton" parent="Control/Add_container" groups=["Action nodes"]]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.138034, 0.138034, 0.138034, 1)
@@ -210,7 +308,7 @@ popup/item_0/disabled = true
 popup/item_0/separator = true
 script = ExtResource("6_2idus")
 
-[node name="Add_condition_container" type="BoxContainer" parent="Control"]
+[node name="Add_condition_container" type="BoxContainer" parent="Control" groups=["Condition nodes"]]
 visible = false
 layout_mode = 1
 anchors_preset = -1
@@ -223,7 +321,7 @@ offset_right = 0.0700226
 theme_override_constants/separation = 160
 metadata/_edit_use_anchors_ = true
 
-[node name="AddCondition" type="OptionButton" parent="Control/Add_condition_container"]
+[node name="AddCondition" type="OptionButton" parent="Control/Add_condition_container" groups=["Condition nodes"]]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.209908, 0.209908, 0.209908, 1)
@@ -231,14 +329,40 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_udqq3")
 alignment = 1
 selected = 0
 fit_to_longest_item = false
-item_count = 3
+item_count = 1
 popup/item_0/text = "Add condition"
 popup/item_0/id = 0
 popup/item_0/separator = true
-popup/item_1/text = "AI"
-popup/item_1/id = 1
-popup/item_2/text = "Custom"
-popup/item_2/id = 2
+script = ExtResource("6_2idus")
+path = "res://instances/Loop/loop_editor_nodes/conditions"
+
+[node name="Add_using_container" type="BoxContainer" parent="Control" groups=["Using nodes"]]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.00465116
+anchor_top = 0.00318182
+anchor_right = 0.448674
+anchor_bottom = 0.06
+offset_top = 0.250008
+offset_right = 0.0700226
+theme_override_constants/separation = 160
+metadata/_edit_use_anchors_ = true
+
+[node name="AddUsing" type="OptionButton" parent="Control/Add_using_container" groups=["Using nodes"]]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.209908, 0.209908, 0.209908, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_udqq3")
+alignment = 1
+selected = 0
+fit_to_longest_item = false
+item_count = 1
+popup/item_0/text = "Add using"
+popup/item_0/id = 0
+popup/item_0/separator = true
+script = ExtResource("6_2idus")
+path = "res://instances/Loop/loop_editor_nodes/using"
 
 [node name="Events_container" type="BoxContainer" parent="Control"]
 layout_mode = 1
@@ -292,32 +416,6 @@ popup/item_9/id = 9
 popup/item_10/text = "Custom"
 popup/item_10/id = 10
 
-[node name="choiceorder" type="OptionButton" parent="Control"]
-z_index = 1
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -143.0
-offset_top = -37.0
-offset_right = -4.0
-offset_bottom = -6.0
-grow_horizontal = 0
-grow_vertical = 0
-theme_override_styles/normal = SubResource("StyleBoxFlat_5w7bp")
-selected = 0
-item_count = 4
-popup/item_0/text = "None"
-popup/item_0/id = 0
-popup/item_1/text = "Random"
-popup/item_1/id = 1
-popup/item_2/text = "Straight"
-popup/item_2/id = 2
-popup/item_3/text = "Sync"
-popup/item_3/id = 3
-
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 
 [node name="fadein" type="Sprite2D" parent="."]
@@ -330,9 +428,18 @@ script = ExtResource("6_vm77g")
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
-[connection signal="tab_changed" from="Control/Tabs" to="." method="_ON_TAB_CHANGED"]
-[connection signal="button_down" from="Control/Save_container/SaveButton" to="." method="_on_save_button_button_down"]
-[connection signal="item_selected" from="Control/Add_container/AddNode" to="." method="_on_add_node_item_selected"]
-[connection signal="item_selected" from="Control/Add_condition_container/AddCondition" to="." method="_on_add_condition_item_selected"]
-[connection signal="item_selected" from="Control/Events_container/EventsNode" to="." method="_on_events_node_item_selected"]
-[connection signal="item_selected" from="Control/choiceorder" to="." method="_on_choiceorder_item_selected"]
+[connection signal="tab_changed" from="Control/Tabs" to="." method="tab_has_changed"]
+[connection signal="button_down" from="Control/panels/ActionPanel/Event/Clear_button" to="Control/panels/ActionPanel/Event/Clear_button" method="pressed"]
+[connection signal="canceled" from="Control/panels/ActionPanel/Event/Clear_button/ConfirmationDialog" to="Control/panels/ActionPanel/Event/Clear_button" method="canceled"]
+[connection signal="confirmed" from="Control/panels/ActionPanel/Event/Clear_button/ConfirmationDialog" to="Control/panels/ActionPanel/Event/Clear_button" method="confirmed"]
+[connection signal="button_down" from="Control/panels/ConditionsPanel/info/Clear_button" to="Control/panels/ConditionsPanel/info/Clear_button" method="pressed"]
+[connection signal="canceled" from="Control/panels/ConditionsPanel/info/Clear_button/ConfirmationDialog" to="Control/panels/ConditionsPanel/info/Clear_button" method="canceled"]
+[connection signal="confirmed" from="Control/panels/ConditionsPanel/info/Clear_button/ConfirmationDialog" to="Control/panels/ConditionsPanel/info/Clear_button" method="confirmed"]
+[connection signal="button_down" from="Control/panels/UsingPanel/info/Clear_button" to="Control/panels/UsingPanel/info/Clear_button" method="pressed"]
+[connection signal="canceled" from="Control/panels/UsingPanel/info/Clear_button/ConfirmationDialog" to="Control/panels/UsingPanel/info/Clear_button" method="canceled"]
+[connection signal="confirmed" from="Control/panels/UsingPanel/info/Clear_button/ConfirmationDialog" to="Control/panels/UsingPanel/info/Clear_button" method="confirmed"]
+[connection signal="button_down" from="Control/Save_container/SaveButton" to="." method="_save_been_clicked"]
+[connection signal="item_selected" from="Control/Add_container/AddNode" to="." method="_add_action"]
+[connection signal="item_selected" from="Control/Add_condition_container/AddCondition" to="." method="_add_condition"]
+[connection signal="item_selected" from="Control/Add_using_container/AddUsing" to="." method="_add_using" flags=3]
+[connection signal="item_selected" from="Control/Events_container/EventsNode" to="." method="_set_event"]

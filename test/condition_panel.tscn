@@ -1,0 +1,65 @@
+[gd_scene load_steps=3 format=3 uid="uid://dmli184j8igdm"]
+
+[ext_resource type="Script" uid="uid://cxju1awbto1u" path="res://scripts/Loops/loop_editor/condition/custom/operator.gd" id="1_skfsy"]
+[ext_resource type="Script" uid="uid://bcei2265l6xen" path="res://scripts/Loops/loop_editor/condition/general_condition_value_script.gd" id="2_udtme"]
+
+[node name="ConditionPanel" type="Panel"]
+custom_minimum_size = Vector2(0, 45)
+
+[node name="Operator" type="OptionButton" parent="."]
+layout_mode = 0
+offset_left = 104.0
+offset_top = 14.0
+offset_right = 146.0
+offset_bottom = 45.0
+scale = Vector2(0.61523, 0.61523)
+tooltip_text = "Check if it's equal, greater, or lesser than
+the next value"
+alignment = 1
+selected = 0
+item_count = 3
+popup/item_0/text = "="
+popup/item_0/id = 0
+popup/item_1/text = ">"
+popup/item_1/id = 1
+popup/item_2/text = "<"
+popup/item_2/id = 2
+script = ExtResource("1_skfsy")
+
+[node name="ConditionText" type="RichTextLabel" parent="."]
+layout_mode = 2
+offset_left = 10.0
+offset_top = 12.0
+offset_right = 98.0
+offset_bottom = 35.0
+scale = Vector2(0.937105, 0.937105)
+tooltip_text = "Check if this value is equal to value 2"
+text = "AI  Number"
+fit_content = true
+
+[node name="Delete" type="Button" parent="."]
+layout_mode = 0
+offset_left = 252.0
+offset_top = 7.0
+offset_right = 286.0
+offset_bottom = 38.0
+pivot_offset = Vector2(11.775, 14.785)
+mouse_default_cursor_shape = 2
+text = "Del"
+
+[node name="Value" type="LineEdit" parent="."]
+layout_mode = 0
+offset_left = 145.0
+offset_top = 12.0
+offset_right = 260.0
+offset_bottom = 43.0
+scale = Vector2(0.721403, 0.721403)
+text = "0"
+alignment = 1
+context_menu_enabled = false
+emoji_menu_enabled = false
+virtual_keyboard_type = 2
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+select_all_on_focus = true
+script = ExtResource("2_udtme")

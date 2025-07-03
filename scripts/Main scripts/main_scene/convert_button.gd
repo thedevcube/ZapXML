@@ -3,7 +3,7 @@ extends Button
 @onready var itemlist = $"../Panel/Initlist_scroll/Init_List"
 @onready var tabs = $"../ItemList_tabs"
 @onready var compiled_text = $"../ItemXML_compiledtext"
-@onready var loop_area = $"../Loops_tab/MarginContainer/VBoxContainer"
+@onready var loop_area = $"../Loops_tab/MarginContainer/ScrollContainer/VBoxContainer"
 @onready var streamplayer = $"../AudioStreamPlayer"
 var regex = RegEx.new()
 
@@ -17,6 +17,7 @@ func _on_button_down() -> void:
 func convert_list():
 	compiled_text.text = ''
 
+#converting init
 	if $"../buttonscont/init_toggle".button_pressed == true:
 		compiled_text.text += '<Init>\n'
 		#converting INIT
@@ -39,64 +40,58 @@ func convert_list():
 		compiled_text.text += '</Init>\n\n'
 
 
-	#converting LOOP
+#converting LOOP
 	# if any loop exist
 	if loop_area.get_child_count() > 0:
 		# for every loop
 		for loop in loop_area.get_child_count():
+			var le := preload("res://instances/Loop/loop_editor.tscn").instantiate()
 			# Store the current selected loop, 
-			var loop_child = loop_area.get_child(loop)
+			var loop_child: loop_template = loop_area.get_child(loop)
+			loop_child.add_child(le)
+
 			# Start an loop with this loop name
-			compiled_text.text += '<Loop Name="' + loop_child.name + '">'
-			# variable representing the current loop file
-			var loop_instantiated = load(Global.zap_folder_loop + loop_child.name + ".scn")
-			# If the file exists
-			if loop_instantiated != null:
-				# Now we instantiate it, and get its actionpanel child
-				var loop_node = loop_instantiated.instantiate()
-				var loop_action_node = loop_node.get_child(0).get_child(0).get_child(0)
-				var loop_condition_node = loop_node.get_child(1).get_child(0).get_child(0)
-				
-				# Using
-				if loop_action_node.using != "none":
-					compiled_text.text += '\n  <Using>\n'
-					compiled_text.text += '     ' + loop_action_node.using
-					compiled_text.text += '\n  </Using>'
-				
-				# Events
-				compiled_text.text += '\n <Events>\n'
-				compiled_text.text += '   ' + loop_action_node.local_event
-				compiled_text.text += '\n </Events>'
-				
-				
-				# Conditions
-				compiled_text.text += '\n <Conditions>'
-				for i in range(loop_condition_node.get_child_count()):
-					var c_node = loop_condition_node.get_child(i)
-					compiled_text.text += str('\n       ' + c_node.convert_data)
-				compiled_text.text += '\n </Conditions>'
-				
-				# Actions
-				compiled_text.text += '\n  <Actions>'
-				# Start choice order, if any
-				if loop_action_node.choiceorder != "": compiled_text.text += str('\n  <Choice Order="' + loop_action_node.choiceorder + '" Set="1">')
-				
-				#...append the actions:
-				for i in range(loop_action_node.get_child_count()):
-					var action_node = loop_action_node.get_child(i)
-					compiled_text.text += str('\n       ' + action_node.convert_data)
-				
-				# End choice order, if any
-				if loop_action_node.choiceorder != "": compiled_text.text += '\n  </Choice>'
-				
-				# end the actions:
-				compiled_text.text += '\n  </Actions>\n'
-				
-				# END THE LOOP PART
-				compiled_text.text += '</Loop>\n\n'
-			elif loop_instantiated == null:
-						OS.alert("Error, one or more of your loops is not saved, therefore we can't proceed." , "Converting error")
-						compiled_text.text = "ERROR! \nPlease make sure to save all of your loops before converting!\nSave them by clicking on edit > save, then close the window and try converting again."
-						return
+			append( ('<Loop>') if loop_child.loopnameref.text == "" else ('<Loop Name="%s">' % [loop_child.loopnameref.text]) )
+
+## EVENTS
+			append("<Events>" , 2)
+			append(loop_child.data.get("event") , 4)
+			append("</Events>" , 2)
+
+			append("<Using>" , 2)
+
+## USING
+			if le.using_list.get_child_count() > 0:
+				for child in le.using_list.get_children():
+					await child.data_changed # wait for the values to load
+					append(child.convert_data)
+
+			append("</Using>" , 2)
+			append("<Conditions>" , 2)
+
+## CONDITIONS
+			if le.condition_list.get_child_count() > 0:
+				for child in le.condition_list.get_children():
+					if "data_changed" in child: await child.data_changed # wait for the values to load
+					append(child.convert_data , 4)
+
+			append("</Conditions>" , 2)
+			append("<Actions>" , 2)
+
+## ACTIONS
+			if le.action_list.get_child_count() > 0:
+				for child in le.action_list.get_children():
+					if "data_changed" in child: await child.data_changed # wait for the values to load
+					append(child.data if not "convert_data" in child else child.convert_data , 4)
+
+			append("</Actions>" , 2)
+			append("</Loop>\n")
+
+			le.queue_free()
+
+## Append to the converted text
+func append(atext: String , linespace: int = 0):
+	var spaces = ' '.repeat(linespace)
+	compiled_text.text += ('\n' + spaces + atext)
 
 var alert_was_shown = false
